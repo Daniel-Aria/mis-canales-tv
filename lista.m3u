@@ -1,3 +1,9 @@
 #EXTM3U
 #EXTINF:-1, TVO Canal 23 SV
 https://tvo.flynetwifi.com/5crjmr1645tqt71ovagufgc1x3d/playlist.m3u8
+
+#EXTINF:-1 tvg-logo="https://static.wikia.nocookie.net/logopedia/images/b/b7/Canal_19_El_Salvador.png/revision/latest?cb=20210621012348&path-prefix=es" group-title="El Salvador",EL SALVADOR | Canal 19 Megavisión
+https://mgvchannel19-ioriver-cdn.encoders.immergo.tv/master.m3u8
+
+#EXTINF:-1 tvg-logo="https://i.ytimg.com/vi/fCADRn91MtE/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBQ-9FME22KNP433SNJTd8p1dmr2Q" group-title="El Salvador",EL SALVADOR | Canal 21 Megavisión
+https://mgvchannel21-ioriver-cdn.encoders.immergo.tv/master.m3u8
