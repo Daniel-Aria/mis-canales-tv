@@ -1,0 +1,32 @@
+name: Actualizador Automatico de Canales
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Se ejecuta cada hora exacta
+  workflow_dispatch:      # Permite ejecutarlo manualmente para probar
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo del repo
+        uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Instalar libreria de internet
+        run: pip install requests
+
+      - name: Ejecutar el scraper
+        run: python scraper.py
+
+      - name: Guardar la lista actualizada en el repo
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add lista.m3u
+          git commit -m "Lista m3u actualizada" || exit 0
+          git push
