@@ -2,10 +2,10 @@ import requests
 import re
 
 # ============================================================
-# TUS CANALES (He añadido una mejora para CBC)
+# LISTA DE CANALES
 # ============================================================
 canales_a_buscar = {
-    "CBC News Canada": "https://famelack.com/tv/ca/J0CqDMWbn8VHaM",
+    "CBC News Network": "https://famelack.com/tv/ca/J0CqDMWbn8VHaM",
     "TVO Canal 23 SV": "https://tvocanal23.com/tvo-en-vivo/"
 }
 # ============================================================
@@ -16,40 +16,48 @@ def get_m3u8(url):
         'Referer': 'https://famelack.com/'
     }
     try:
+        # 1. Intentamos leer la página principal
         response = requests.get(url, headers=headers, timeout=15)
         
-        # Intento 1: Buscar .m3u8 directo (como el del canal 23)
+        # 2. Buscamos el .m3u8 directamente
         links = re.findall(r'(https?://[^\s\'"]+\.m3u8[^\s\'"]*)', response.text)
         if links:
             return links[0]
         
-        # Intento 2: Si es Famelack y no hay .m3u8, buscamos el "embed" (para CBC)
-        embed_url = re.search(r'iframe.*?src=["\'](.*?)["\']', response.text)
-        if embed_url:
-            embed_res = requests.get(embed_url.group(1), headers=headers, timeout=10)
-            links_embed = re.findall(r'(https?://[^\s\'"]+\.m3u8[^\s\'"]*)', embed_res.text)
-            if links_embed:
-                return links_embed[0]
+        # 3. Si no hay link (caso CBC), buscamos la URL del reproductor interno (iframe)
+        iframe_match = re.search(r'iframe.*?src=["\'](.*?)["\']', response.text)
+        if iframe_match:
+            iframe_url = iframe_match.group(1)
+            # Si la URL del iframe es relativa, la completamos
+            if iframe_url.startswith('//'):
+                iframe_url = 'https:' + iframe_url
+            
+            # Entramos al reproductor interno para buscar el link real
+            res_iframe = requests.get(iframe_url, headers=headers, timeout=10)
+            links_hidden = re.findall(r'(https?://[^\s\'"]+\.m3u8[^\s\'"]*)', res_iframe.text)
+            if links_hidden:
+                return links_hidden[0]
                 
     except Exception as e:
-        print(f"Error en {url}: {e}")
+        print(f"Error procesando {url}: {e}")
     return None
 
-# Limpiamos y empezamos la lista
+# Crear el archivo m3u
 with open("lista.m3u", "w") as f:
     f.write("#EXTM3U\n")
 
-print("--- Iniciando Rastreo ---")
+print("--- Actualizando canales ---")
 
 for nombre, url in canales_a_buscar.items():
-    print(f"Buscando: {nombre}...", end=" ")
-    link = get_m3u8(url)
-    if link:
+    print(f"Buscando {nombre}...", end=" ")
+    link_encontrado = get_m3u8(url)
+    
+    if link_encontrado:
         with open("lista.m3u", "a") as f:
             f.write(f"#EXTINF:-1, {nombre}\n")
-            f.write(f"{link}\n")
+            f.write(f"{link_encontrado}\n")
         print("✅")
     else:
-        print("❌")
+        print("❌ (No se encontró)")
 
-print("--- Proceso Terminado ---")
+print("--- Finalizado ---")
