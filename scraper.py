@@ -2,7 +2,7 @@ import requests
 import re
 
 # ============================================================
-# LISTA DE CANALES
+# TU LISTA DE CANALES
 # ============================================================
 canales_a_buscar = {
     "CBC News Network": "https://famelack.com/tv/ca/J0CqDMWbn8VHaM",
@@ -16,48 +16,43 @@ def get_m3u8(url):
         'Referer': 'https://famelack.com/'
     }
     try:
-        # 1. Intentamos leer la página principal
+        # 1. Leemos la página
         response = requests.get(url, headers=headers, timeout=15)
         
-        # 2. Buscamos el .m3u8 directamente
+        # 2. Buscamos el .m3u8 directamente (como el del canal 23)
         links = re.findall(r'(https?://[^\s\'"]+\.m3u8[^\s\'"]*)', response.text)
         if links:
             return links[0]
         
-        # 3. Si no hay link (caso CBC), buscamos la URL del reproductor interno (iframe)
+        # 3. Si no aparece (caso CBC), buscamos el "reproductor interno"
         iframe_match = re.search(r'iframe.*?src=["\'](.*?)["\']', response.text)
         if iframe_match:
             iframe_url = iframe_match.group(1)
-            # Si la URL del iframe es relativa, la completamos
             if iframe_url.startswith('//'):
                 iframe_url = 'https:' + iframe_url
             
-            # Entramos al reproductor interno para buscar el link real
+            # Entramos al reproductor para sacar el link real
             res_iframe = requests.get(iframe_url, headers=headers, timeout=10)
             links_hidden = re.findall(r'(https?://[^\s\'"]+\.m3u8[^\s\'"]*)', res_iframe.text)
             if links_hidden:
                 return links_hidden[0]
                 
     except Exception as e:
-        print(f"Error procesando {url}: {e}")
+        print(f"Error en {url}: {e}")
     return None
 
-# Crear el archivo m3u
+# Escribir la lista final
 with open("lista.m3u", "w") as f:
     f.write("#EXTM3U\n")
 
-print("--- Actualizando canales ---")
-
+print("--- Iniciando búsqueda ---")
 for nombre, url in canales_a_buscar.items():
     print(f"Buscando {nombre}...", end=" ")
-    link_encontrado = get_m3u8(url)
-    
-    if link_encontrado:
+    resultado = get_m3u8(url)
+    if resultado:
         with open("lista.m3u", "a") as f:
             f.write(f"#EXTINF:-1, {nombre}\n")
-            f.write(f"{link_encontrado}\n")
+            f.write(f"{resultado}\n")
         print("✅")
     else:
-        print("❌ (No se encontró)")
-
-print("--- Finalizado ---")
+        print("❌")
