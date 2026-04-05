@@ -4,10 +4,17 @@ import re
 # ============================================================
 # TU LISTA DE CANALES
 # ============================================================
+# ============================================================
+# TUS CANALES SELECCIONADOS
+# ============================================================
 canales_a_buscar = {
-    "CBC News Network": "https://famelack.com/tv/ca/J0CqDMWbn8VHaM",
-    "TVO Canal 23 SV": "https://tvocanal23.com/tvo-en-vivo/"
+    "TVO Canal 23 SV": "https://tvocanal23.com/tvo-en-vivo/",
+    "ABC 7 New York": "https://famelack.com/tv/us/ABC-7-New-York",
+    "ABC 7 Los Angeles": "https://famelack.com/tv/us/ABC-7-Los-Angeles-CA-KABC-TV",
+    "ABC 7 Albuquerque": "https://famelack.com/tv/us/KOAT",
+    "ABC 7 San Francisco": "https://famelack.com/tv/us/KGO-DT1"
 }
+# ============================================================
 # ============================================================
 
 def get_m3u8(url):
