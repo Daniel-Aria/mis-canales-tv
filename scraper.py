@@ -4,6 +4,7 @@ import re
 # ============================================================
 # TU LISTA DE CANALES ACTUALIZADA (Solo TVO 23 y ABC 7)
 # ============================================================
+
 canales_a_buscar = {
     "TVO Canal 23 SV": "https://tvocanal23.com/tvo-en-vivo/",
     "ABC 7 Albuquerque": "https://famelack.com/tv/us/KOAT"
