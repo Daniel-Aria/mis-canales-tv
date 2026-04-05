@@ -2,19 +2,12 @@ import requests
 import re
 
 # ============================================================
-# TU LISTA DE CANALES
-# ============================================================
-# ============================================================
-# TUS CANALES SELECCIONADOS
+# TU LISTA DE CANALES ACTUALIZADA (Solo TVO 23 y ABC 7)
 # ============================================================
 canales_a_buscar = {
     "TVO Canal 23 SV": "https://tvocanal23.com/tvo-en-vivo/",
-    "ABC 7 New York": "https://famelack.com/tv/us/ABC-7-New-York",
-    "ABC 7 Los Angeles": "https://famelack.com/tv/us/ABC-7-Los-Angeles-CA-KABC-TV",
-    "ABC 7 Albuquerque": "https://famelack.com/tv/us/KOAT",
-    "ABC 7 San Francisco": "https://famelack.com/tv/us/KGO-DT1"
+    "ABC 7 Albuquerque": "https://famelack.com/tv/us/KOAT"
 }
-# ============================================================
 # ============================================================
 
 def get_m3u8(url):
@@ -23,22 +16,20 @@ def get_m3u8(url):
         'Referer': 'https://famelack.com/'
     }
     try:
-        # 1. Leemos la página
         response = requests.get(url, headers=headers, timeout=15)
         
-        # 2. Buscamos el .m3u8 directamente (como el del canal 23)
+        # Intento 1: Buscar .m3u8 directo
         links = re.findall(r'(https?://[^\s\'"]+\.m3u8[^\s\'"]*)', response.text)
         if links:
             return links[0]
         
-        # 3. Si no aparece (caso CBC), buscamos el "reproductor interno"
+        # Intento 2: Buscar dentro del iframe (para canales de Famelack)
         iframe_match = re.search(r'iframe.*?src=["\'](.*?)["\']', response.text)
         if iframe_match:
             iframe_url = iframe_match.group(1)
             if iframe_url.startswith('//'):
                 iframe_url = 'https:' + iframe_url
             
-            # Entramos al reproductor para sacar el link real
             res_iframe = requests.get(iframe_url, headers=headers, timeout=10)
             links_hidden = re.findall(r'(https?://[^\s\'"]+\.m3u8[^\s\'"]*)', res_iframe.text)
             if links_hidden:
@@ -48,13 +39,13 @@ def get_m3u8(url):
         print(f"Error en {url}: {e}")
     return None
 
-# Escribir la lista final
+# Crear el archivo de lista
 with open("lista.m3u", "w") as f:
     f.write("#EXTM3U\n")
 
-print("--- Iniciando búsqueda ---")
+print("--- Actualizando tu lista ---")
 for nombre, url in canales_a_buscar.items():
-    print(f"Buscando {nombre}...", end=" ")
+    print(f"Procesando {nombre}...", end=" ")
     resultado = get_m3u8(url)
     if resultado:
         with open("lista.m3u", "a") as f:
@@ -63,3 +54,5 @@ for nombre, url in canales_a_buscar.items():
         print("✅")
     else:
         print("❌")
+
+print("--- ¡Listo! ---")
