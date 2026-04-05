@@ -5,7 +5,7 @@ import re
 # TUS CANALES (He añadido una mejora para CBC)
 # ============================================================
 canales_a_buscar = {
-    "CBC News Canada": "https://famelack.com/tv/ca/0TNzmvJYBpUTj4",
+    "CBC News Canada": "https://famelack.com/tv/ca/J0CqDMWbn8VHaM",
     "TVO Canal 23 SV": "https://tvocanal23.com/tvo-en-vivo/"
 }
 # ============================================================
