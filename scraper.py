@@ -6,8 +6,7 @@ import re
 # ============================================================
 
 canales_a_buscar = {
-"TVO Canal 23 SV": "https://tvocanal23.com/tvo-en-vivo/",
-    "ABC 7 New York": "https://famelack.com/tv/ca/Xrqwoq40lkwai9",
+"TVO Canal 23 SV": "https://tvocanal23.com/tvo-en-vivo/"
 }
 # ============================================================
 
