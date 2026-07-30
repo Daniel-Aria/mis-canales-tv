@@ -6,7 +6,7 @@ import re
 # ============================================================
 
 canales_a_buscar = {
-"https://teleon.tv/sv/live-tv/cnn-en-espanol-sv/"
+"https://tvocanal23.com/tvo-en-vivo/"
 }
 # ============================================================
 
