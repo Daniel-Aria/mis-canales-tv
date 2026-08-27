@@ -6,7 +6,7 @@ import re
 # ============================================================
 
 canales_a_buscar = {
-    "TCS": "https://cdn.jwplayer.com/live/broadcast/imvNdR1V.m3u8?exp=1787890320&sig=57ca47d10c37b801dfaa531ba2315be0"
+    "TCS": "https://www.tcsgo.com/m/bRQCpqIA/canal-4?r=5Y628crP&play=1"
 }
 # ============================================================
 
