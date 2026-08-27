@@ -6,7 +6,7 @@ import re
 # ============================================================
 
 canales_a_buscar = {
-    "TCS": "https://www.tcsgo.com/m/bRQCpqIA/canal-4?r=5Y628crP&play=1"
+    "TVO": "https://tvocanal23.com/tvo-en-vivo/"
 }
 # ============================================================
 
