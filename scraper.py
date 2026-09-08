@@ -6,7 +6,7 @@ import re
 # ============================================================
 
 canales_a_buscar = {
-    "TVO": "https://tvocanal23.com/tvo-en-vivo/"
+    "TVO": "https://cdn.jwplayer.com/live/broadcast/imvNdR1V.mpd"
 }
 # ============================================================
 
